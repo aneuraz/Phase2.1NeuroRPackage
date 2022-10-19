@@ -9,7 +9,7 @@
 #' @importFrom forcats fct_recode fct_reorder
 #' @importFrom tidyr pivot_longer pivot_wider replace_na
 #'
-runAnalysis <- function(is_docker = TRUE, test = FALSE, currSiteId=NULL, data_dir= "/4ceData/Input", output_dir=NULL) {
+runAnalysis <- function(is_docker = TRUE, test = FALSE, currSiteId=NULL, data_dir= "/4ceData/Input", output_dir=NULL, run_qc=TRUE) {
 
   #sink("analysis_output.txt")
 
@@ -31,10 +31,12 @@ runAnalysis <- function(is_docker = TRUE, test = FALSE, currSiteId=NULL, data_di
   ## is mounted to the container
 
   ## run the quality control
-  remotes::install_github(
-    "https://github.com/covidclinical/Phase2.1DataRPackage",
-    subdir = "FourCePhase2.1Data", upgrade = FALSE
-  )
+  if (run_qc) {
+    remotes::install_github(
+      "https://github.com/covidclinical/Phase2.1DataRPackage",
+      subdir = "FourCePhase2.1Data", upgrade = FALSE
+    )
+  }
 
   if(is_docker == TRUE) {
     data_dir <- FourCePhase2.1Data::getInputDataDirectoryName()
