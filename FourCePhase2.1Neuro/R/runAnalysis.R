@@ -42,15 +42,21 @@ runAnalysis <- function(is_docker = TRUE, test = FALSE, currSiteId=NULL, data_di
     data_dir <- FourCePhase2.1Data::getInputDataDirectoryName()
     currSiteId <- FourCePhase2.1Data::getSiteId()
     CurrSiteId <- toupper(currSiteId)
-    print('runQC_docker version')
-    FourCePhase2.1Data::runQC(currSiteId)
+    if (run_qc) {
+      print('runQC_docker version')
+      FourCePhase2.1Data::runQC(currSiteId)
+    }
   } else {
     currSiteId = currSiteId
     CurrSiteId <- toupper(currSiteId)
-    print('runQC_nodocker version')
-    FourCePhase2.1Data::runQC_nodocker(currSiteId, dir.input = data_dir)
+    if (run_qc) {
+      print('runQC_nodocker version')
+      FourCePhase2.1Data::runQC_nodocker(currSiteId, dir.input = data_dir)
+    }
   }
 
+    
+    
   site_specs <- site_params %>%
     dplyr::filter(tolower(siteid) == tolower(currSiteId))
 
